@@ -1,0 +1,58 @@
+.app__header{
+    text-align: center;
+    font-size: 44px;
+}
+
+.app__menu{
+    text-align: right;
+    padding: 20px 50px 0px 50px;
+}
+
+.app__menu__button{
+    padding: 5px 10px;
+    margin: 0px 15px;
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.app__menu__button:hover{
+    background-color: #efefef;
+}
+
+.content{
+    padding: 10px 30px;
+}
+
+.content__heading{
+    text-align: center;
+}
+
+.content__container{
+    display: flex;
+    width: 60%;
+    margin: 50px auto 0px auto;
+    justify-content: space-around;
+}
+
+.content__container div {
+    display: block;
+    width: 150px;
+}
+
+.destination__label{
+    text-align: center;
+}
+
+.button__container{
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;    
+}
+
+.submit__button{
+    font-weight: 500;
+    cursor: pointer;
+}
