@@ -1,0 +1,23 @@
+.app__header{
+    text-align: center;
+    font-size: 44px;
+}
+
+.app__menu{
+    text-align: right;
+    padding: 20px 50px 0px 50px;
+}
+
+.app__menu__button{
+    padding: 5px 10px;
+    margin: 0px 15px;
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.app__menu__button:hover{
+    background-color: #efefef;
+}

@@ -1,11 +1,17 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AutoComplete, Radio } from 'antd';
+
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 import './App.css';
 import 'antd/dist/antd.css';
 
 function App() {
+
+  const history = useHistory();
 
   const [planet, setPlanet] = useState([]);
   const [vehicle, setVehicle] = useState([]);
@@ -18,7 +24,6 @@ function App() {
   const [vehicle2, setVehicle2] = useState();
   const [vehicle3, setVehicle3] = useState();
   const [vehicle4, setVehicle4] = useState();
-  const [value, setValue] = React.useState(1);
 
   const fetchCall = async (subpath) => {
     const answer = await fetch(`https://findfalcone.herokuapp.com/${subpath}`)
@@ -79,8 +84,37 @@ function App() {
     })
   }
 
-  const submitForm = () => {
-    
+  const fetchResult = async () => {
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Accept", "application/json");
+
+    let body = JSON.stringify({"token": token, "planet_names": [planet1, planet2, planet3, planet4], "vehicle_names": [vehicle1, vehicle2, vehicle3, vehicle4]});
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: body,
+        redirect: 'follow'
+    };
+
+    await fetch("https://findfalcone.herokuapp.com/find", requestOptions)
+                        .then(response => response.json())
+                        .then(result => {
+                            if(result.status === 'success')
+                              history.push(`/result?status=${result.status}&planet=${result.planet_name}`);
+                            else if(result.status === 'failure')
+                              history.push(`/result?failure`);
+                            else  
+                              history.push(`/result?error=${result.error}`);       
+                        })
+                        .catch(error => history.push(`/result?error=${error.error}`));        
+  }
+
+  const submitForm = async () => {
+    if(vehicle1 && vehicle2 && vehicle3 && vehicle4 && planet1 && planet2 && planet3 && planet4){
+      await fetchResult();
+    }
   }
 
 
@@ -93,6 +127,7 @@ function App() {
       planets.forEach((planet) => {
         delete Object.assign(planet, {['value']: planet['name'] })['name'];
       })
+
       setPlanet([...planets]);
       setVehicle([...vehicles]);
       setToken(token.token);
@@ -104,13 +139,7 @@ function App() {
 
   return (
     <div className="app">
-      <header>
-        <div className="app__menu">
-          <button className="app__menu__button">Reset</button>
-          <button className="app__menu__button">GeekTrust Home</button>
-        </div>
-        <h1 className="app__header">Finding Falcone!</h1>
-      </header>
+      <Header />
       <main className="content">
         <h2 className="content__heading">Select planets you want to search in:</h2>
         <div className="content__container">
@@ -225,6 +254,7 @@ function App() {
           </button>
         </div>
       </main>
+      <Footer/>
     </div>
   );
 }
